@@ -119,7 +119,7 @@ impl Client {
         place_id: S1,
         cursor: Option<S2>,
         limit: Option<u32>,
-    ) -> Result<serde_json::Value>
+    ) -> Result<Pagination>
     where
         S1: AsRef<str>,
         S2: AsRef<str>,

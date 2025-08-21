@@ -60,20 +60,43 @@ pub async fn print_discover(client: &Client) -> Result<()> {
     });
 
     let filter = jq::discover();
-    print_json(result, filter).await?;
-    Ok(())
+    print_json(result, filter).await
 }
 
 pub async fn print_category(value: serde_json::Value) -> Result<()> {
     let filter = jq::category();
-    print_json(value, filter).await?;
-    Ok(())
+    print_json(value, filter).await
 }
 
-pub async fn print_place(value: serde_json::Value) -> Result<()> {
+pub async fn print_place(client: &Client, value: serde_json::Value) -> Result<()> {
+    let place = value.get("place").ok_or("no place entry")?;
+    let api_id = place
+        .get("api_id")
+        .ok_or("no api_id entry")?
+        .as_str()
+        .ok_or("invalid api_id")?;
+    let mut events = vec![];
+
+    let mut cursor = None;
+    loop {
+        let result = client.get_place_events(api_id, cursor, Some(50)).await?;
+        events.extend(result.entries);
+
+        if !result.has_more {
+            break;
+        }
+
+        cursor = result.next_cursor;
+        assert!(cursor.is_some());
+    }
+
+    let value = json!({
+        "place": place,
+        "events": events,
+    });
+
     let filter = jq::place();
-    print_json(value, filter).await?;
-    Ok(())
+    print_json(value, filter).await
 }
 
 #[tokio::main]
@@ -133,7 +156,7 @@ pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
         },
         FetchTarget::Place(name) => {
             let result = client.get_place_by_slug(&name).await?;
-            print_place(result).await?;
+            print_place(&client, result).await?;
         },
         // FetchTarget::Event(_) => {
         //     unimplemented!();
@@ -145,7 +168,7 @@ pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
             }
 
             if let Ok(result) = client.get_place_by_slug(&resource).await {
-                print_place(result).await?;
+                print_place(&client, result).await?;
                 return Ok(EX_OK);
             }
 
