@@ -6,7 +6,7 @@ pub enum FetchTarget {
     Category(String),
     Calendar(String),
     Place(String),
-    Event(String),
+    // Event(String),
     Unknown(String),
 }
 
@@ -56,10 +56,11 @@ where
 }
 
 mod tests {
-    use super::*;
 
     #[test]
     fn test_parse_fetch_url() {
+        use super::*;
+
         assert_eq!(parse_fetch_url("http://lu.ma"), None);
         assert_eq!(parse_fetch_url("http://lu.ma/"), None);
         assert_eq!(
@@ -68,6 +69,10 @@ mod tests {
         );
         assert_eq!(
             parse_fetch_url("https://lu.ma/discover"),
+            Some(FetchTarget::Discover)
+        );
+        assert_eq!(
+            parse_fetch_url("https://lu.ma/discover?asd=123"),
             Some(FetchTarget::Discover)
         );
         assert_eq!(
@@ -83,6 +88,10 @@ mod tests {
         assert_eq!(
             parse_fetch_url("https://lu.ma/sf?k=p"),
             Some(FetchTarget::Place(String::from("sf")))
+        );
+        assert_eq!(
+            parse_fetch_url("https://lu.ma/sf?k=u"),
+            Some(FetchTarget::Unknown(String::from("sf")))
         );
         assert_eq!(
             parse_fetch_url("http://lu.ma/a"),
