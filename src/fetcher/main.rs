@@ -19,7 +19,7 @@ use jq::JsonFilter;
 
 pub type Result<T, E = Box<dyn Error>> = std::result::Result<T, E>;
 
-/// asimov-luma-cataloger
+/// asimov-luma-fetcher
 #[derive(Debug, Parser)]
 #[command(arg_required_else_help = true)]
 struct Options {
