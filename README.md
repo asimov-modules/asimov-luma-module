@@ -36,13 +36,13 @@ asimov-luma-fetcher "https://lu.ma/sf"
 ```
 
 ```bash
-asimov-luma-cataloger list-featured-calendars
-asimov-luma-cataloger list-palces
-asimov-luma-cataloger get-place-by-slug "sf"
-asimov-luma-cataloger get-nearby-events
-asimov-luma-cataloger get-nearby-events-for-category "ai"
-asimov-luma-cataloger get-calendar-events "cal-47FMgklxaO96VYi"
-asimov-luma-cataloger get-place-events "discplace-gCfX0s3E9Hgo3rG"
+asimov-luma-module list-featured-calendars
+asimov-luma-module list-places
+asimov-luma-module get-place-by-slug "sf"
+asimov-luma-module get-nearby-events
+asimov-luma-module get-nearby-events-for-category "ai"
+asimov-luma-module get-calendar-events "cal-47FMgklxaO96VYi"
+asimov-luma-module get-place-events "discplace-gCfX0s3E9Hgo3rG"
 ```
 
 ## ⚙ Configuration
@@ -53,15 +53,15 @@ This module requires no configuration.
 
 ### Installed Binaries
 
-- `asimov-luma-cataloger`
+- `asimov-luma-module`
 - `asimov-luma-fetcher`
 
-### `asimov-luma-cataloger`
+### `asimov-luma-module`
 
 ```
-asimov-luma-cataloger
+asimov-luma-module
 
-Usage: asimov-luma-cataloger [OPTIONS] <COMMAND>
+Usage: asimov-luma-module [OPTIONS] <COMMAND>
 
 Commands:
   list-featured-calendars         List featured calendars.
