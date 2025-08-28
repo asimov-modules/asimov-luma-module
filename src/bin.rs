@@ -83,7 +83,7 @@ pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
 
     // Handle the `--license` flag:
     if options.flags.license {
-        print!("{}", include_str!("../../UNLICENSE"));
+        print!("{}", include_str!("../UNLICENSE"));
         return Ok(EX_OK);
     }
 

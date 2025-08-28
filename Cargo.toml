@@ -64,8 +64,8 @@ strip = true
 lto = "thin"
 
 [[bin]]
-name = "asimov-luma-cataloger"
-path = "src/cataloger/main.rs"
+name = "asimov-luma-module"
+path = "src/bin.rs"
 required-features = ["cli"]
 
 [[bin]]
