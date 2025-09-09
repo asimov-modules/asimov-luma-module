@@ -10,7 +10,7 @@ links:
 
 provides:
   programs:
-    - asimov-luma-cataloger
+    - asimov-luma-module
     - asimov-luma-fetcher
 
 handles:
