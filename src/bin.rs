@@ -95,51 +95,51 @@ pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
     match options.command {
         Commands::ListFeaturedCalendars => {
             let result = client.get_featured_calendars().await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::ListCategories => {
             let result = client.list_categories().await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::ListPlaces => {
             let result = client.list_places().await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetCategory { slug } => {
             let result = client.get_category_by_slug(slug).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetCalendar { id } => {
             let result = client.get_calendar_by_id(id).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetCalendarEvents { id, cursor, limit } => {
             let result = client.get_calendar_events(id, cursor, limit).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetPlaceById { id } => {
             let result = client.get_place_by_id(id).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetPlaceBySlug { slug } => {
             let result = client.get_place_by_slug(slug).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetPlaceEvents { id, cursor, limit } => {
             let result = client.get_place_events(id, cursor, limit).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetEvent { id } => {
             let result = client.get_event(id).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetNearbyEvents => {
             let result = client.get_nearby_events::<String>(None).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetNearbyEventsForCategory { slug } => {
             let result = client.get_nearby_events(Some(slug)).await?;
-            println!("{}", colored_json::to_colored_json_auto(&result)?);
+            println!("{}", serde_json::to_string(&result)?);
         },
     }
 

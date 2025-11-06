@@ -39,7 +39,7 @@ struct Options {
 
 pub async fn print_json(value: serde_json::Value, filter: &JsonFilter) -> Result<()> {
     match filter.filter_json(value) {
-        Ok(filtered) => println!("{}", colored_json::to_colored_json_auto(&filtered)?),
+        Ok(filtered) => println!("{}", filtered),
         Err(jq::JsonFilterError::NoOutput) => (),
         Err(err) => tracing::error!(?err, "Filter failed"),
     }

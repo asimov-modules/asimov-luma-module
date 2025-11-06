@@ -28,34 +28,33 @@ tracing = ["asimov-module/tracing", "clientele?/tracing"]
 
 [dependencies]
 asimov-module = { version = "25.0.0-dev.19", default-features = false, features = [
-    "std",
+  "std",
 ] }
 serde = { version = "1.0", default-features = false, features = [
-    "std",
-    "derive",
+  "std",
+  "derive",
 ] }
 serde_json = { version = "1.0" }
 reqwest = { version = "0.12", default-features = false, features = [
-    "rustls-tls",
-    "charset",
-    "http2",
-    "system-proxy",
-    "gzip",
-    "json",
+  "rustls-tls",
+  "charset",
+  "http2",
+  "system-proxy",
+  "gzip",
+  "json",
 ] }
 tokio = { version = "1.47", features = ["macros", "rt-multi-thread"] }
 thiserror = "2.0"
 url = { version = "2.5", default-features = false }
-colored_json = "5.0"
 jq = { version = "0.1", default-features = false, features = ["all"] }
 
 # Optional integrations:
 clap = { version = "4.5", default-features = false, features = [
-    "std",
+  "std",
 ], optional = true }
 clientele = { version = "0.3.8", default-features = false, features = [
-    "clap",
-    "std",
+  "clap",
+  "std",
 ], optional = true }
 
 [profile.release]
