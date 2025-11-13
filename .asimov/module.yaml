@@ -2,7 +2,7 @@
 ---
 name: luma
 label: Luma
-title: ASIMOV Template Module
+title: ASIMOV Luma Module
 summary: ASIMOV module for importing luma events.
 links:
   - https://github.com/asimov-modules/asimov-luma-module
