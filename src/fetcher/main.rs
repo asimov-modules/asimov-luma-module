@@ -37,7 +37,7 @@ struct Options {
     resource: String,
 }
 
-pub async fn print_json(value: serde_json::Value, filter: &JsonFilter) -> Result<()> {
+pub fn print_json(value: serde_json::Value, filter: &JsonFilter) -> Result<()> {
     match filter.filter_json(value) {
         Ok(filtered) => println!("{}", filtered),
         Err(jq::JsonFilterError::NoOutput) => (),
@@ -46,12 +46,10 @@ pub async fn print_json(value: serde_json::Value, filter: &JsonFilter) -> Result
     Ok(())
 }
 
-pub async fn print_discover(client: &Client) -> Result<()> {
-    let (categories, calendars, places) = tokio::try_join!(
-        client.list_categories(),
-        client.get_featured_calendars(),
-        client.list_places()
-    )?;
+pub fn print_discover(client: &Client) -> Result<()> {
+    let categories = client.list_categories()?;
+    let calendars = client.get_featured_calendars()?;
+    let places = client.list_places()?;
 
     let result = json!({
         "categories": categories.entries,
@@ -60,15 +58,15 @@ pub async fn print_discover(client: &Client) -> Result<()> {
     });
 
     let filter = jq::discover();
-    print_json(result, filter).await
+    print_json(result, filter)
 }
 
-pub async fn print_category(value: serde_json::Value) -> Result<()> {
+pub fn print_category(value: serde_json::Value) -> Result<()> {
     let filter = jq::category();
-    print_json(value, filter).await
+    print_json(value, filter)
 }
 
-pub async fn print_place(client: &Client, value: serde_json::Value) -> Result<()> {
+pub fn print_place(client: &Client, value: serde_json::Value) -> Result<()> {
     let place = value.get("place").ok_or("no place entry")?;
     let api_id = place
         .get("api_id")
@@ -79,7 +77,7 @@ pub async fn print_place(client: &Client, value: serde_json::Value) -> Result<()
 
     let mut cursor = None;
     loop {
-        let result = client.get_place_events(api_id, cursor, Some(50)).await?;
+        let result = client.get_place_events(api_id, cursor, Some(50))?;
         events.extend(result.entries);
 
         if !result.has_more {
@@ -96,11 +94,10 @@ pub async fn print_place(client: &Client, value: serde_json::Value) -> Result<()
     });
 
     let filter = jq::place();
-    print_json(value, filter).await
+    print_json(value, filter)
 }
 
-#[tokio::main]
-pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
+pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
     // Load environment variables from `.env`:
     asimov_module::dotenv().ok();
 
@@ -131,14 +128,14 @@ pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
     let target = parse_fetch_url(options.resource).ok_or("invalid resource")?;
     match target {
         FetchTarget::Discover => {
-            print_discover(&client).await?;
+            print_discover(&client)?;
         },
         FetchTarget::Category(name) => {
-            let result = client.get_category_by_slug(&name).await?;
-            print_category(result).await?;
+            let result = client.get_category_by_slug(&name)?;
+            print_category(result)?;
         },
         FetchTarget::Calendar(_) => {
-            // let places = client.list_places().await?;
+            // let places = client.list_places()?;
             // let Some(place_id) = places.infos.iter().find_map(|info| {
             //     let place = info.get("place")?;
             //     let slug = place.get("slug").and_then(|x| x.as_str())?;
@@ -155,20 +152,20 @@ pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
             unimplemented!();
         },
         FetchTarget::Place(name) => {
-            let result = client.get_place_by_slug(&name).await?;
-            print_place(&client, result).await?;
+            let result = client.get_place_by_slug(&name)?;
+            print_place(&client, result)?;
         },
         // FetchTarget::Event(_) => {
         //     unimplemented!();
         // },
         FetchTarget::Unknown(resource) => {
-            if let Ok(result) = client.get_category_by_slug(&resource).await {
-                print_category(result).await?;
+            if let Ok(result) = client.get_category_by_slug(&resource) {
+                print_category(result)?;
                 return Ok(EX_OK);
             }
 
-            if let Ok(result) = client.get_place_by_slug(&resource).await {
-                print_place(&client, result).await?;
+            if let Ok(result) = client.get_place_by_slug(&resource) {
+                print_place(&client, result)?;
                 return Ok(EX_OK);
             }
 

@@ -64,8 +64,7 @@ enum Commands {
     GetNearbyEventsForCategory { slug: String },
 }
 
-#[tokio::main]
-pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
+pub fn main() -> Result<SysexitsError, Box<dyn Error>> {
     // Load environment variables from `.env`:
     asimov_module::dotenv().ok();
 
@@ -94,51 +93,51 @@ pub async fn main() -> Result<SysexitsError, Box<dyn Error>> {
     let client = Client::new();
     match options.command {
         Commands::ListFeaturedCalendars => {
-            let result = client.get_featured_calendars().await?;
+            let result = client.get_featured_calendars()?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::ListCategories => {
-            let result = client.list_categories().await?;
+            let result = client.list_categories()?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::ListPlaces => {
-            let result = client.list_places().await?;
+            let result = client.list_places()?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetCategory { slug } => {
-            let result = client.get_category_by_slug(slug).await?;
+            let result = client.get_category_by_slug(slug)?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetCalendar { id } => {
-            let result = client.get_calendar_by_id(id).await?;
+            let result = client.get_calendar_by_id(id)?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetCalendarEvents { id, cursor, limit } => {
-            let result = client.get_calendar_events(id, cursor, limit).await?;
+            let result = client.get_calendar_events(id, cursor, limit)?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetPlaceById { id } => {
-            let result = client.get_place_by_id(id).await?;
+            let result = client.get_place_by_id(id)?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetPlaceBySlug { slug } => {
-            let result = client.get_place_by_slug(slug).await?;
+            let result = client.get_place_by_slug(slug)?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetPlaceEvents { id, cursor, limit } => {
-            let result = client.get_place_events(id, cursor, limit).await?;
+            let result = client.get_place_events(id, cursor, limit)?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetEvent { id } => {
-            let result = client.get_event(id).await?;
+            let result = client.get_event(id)?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetNearbyEvents => {
-            let result = client.get_nearby_events::<String>(None).await?;
+            let result = client.get_nearby_events::<String>(None)?;
             println!("{}", serde_json::to_string(&result)?);
         },
         Commands::GetNearbyEventsForCategory { slug } => {
-            let result = client.get_nearby_events(Some(slug)).await?;
+            let result = client.get_nearby_events(Some(slug))?;
             println!("{}", serde_json::to_string(&result)?);
         },
     }
