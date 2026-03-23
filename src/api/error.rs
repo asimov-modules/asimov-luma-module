@@ -5,7 +5,7 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum Error {
     #[error("HTTP error: {0}")]
-    Http(#[from] reqwest::Error),
+    Http(#[from] ureq::Error),
 
     #[error("JSON error: {0}")]
     Json(#[from] serde_json::Error),
