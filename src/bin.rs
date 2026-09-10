@@ -6,7 +6,7 @@ use clap::{Parser, Subcommand};
 use clientele::StandardOptions;
 use std::error::Error;
 
-/// asimov-luma-cataloger
+/// asimov-luma-lister
 #[derive(Debug, Parser)]
 #[command(arg_required_else_help = true)]
 struct Options {
